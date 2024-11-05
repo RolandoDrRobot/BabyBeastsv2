@@ -1,16 +1,36 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SDK, createDojoStore } from "@dojoengine/sdk";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { addAddressPadding } from "starknet";
-
 import { Models, Schema } from "./bindings.ts";
 import { useDojo } from "./useDojo.tsx";
 import useModel from "./useModel.tsx";
 import { useSystemCalls } from "./useSystemCalls.ts";
+import { Card, CardContent } from './components/ui/card.tsx';
+import { Progress } from './components/ui/progress';
+import { Button } from './components/ui/button';
+import { Heart, Pizza, Coffee, Bath, Gamepad2, Sun, Swords, ShieldPlus, TestTubeDiagonal, CircleGauge, } from 'lucide-react';
+import Background from "./components/Background/index";
+import './styles/globals.css';
 
-import ControllerConnectButton from './components/CartridgeController/ControllerConnectButton.tsx';
+import sleep from './img/sleep.gif';
+import eat from './img/eat.gif';
+import play from './img/play.gif';
+import shower from './img/shower.gif';
+import happy from './img/happy.gif';
+import dead from './img/dead.gif';
+import Header from "./components/Header/index.tsx";
+import Footer from "./components/Footer/index.tsx";
+import Play from "./components/Play/index.tsx";
 
 export const useDojoStore = createDojoStore<Schema>();
+
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
 
 function App({ sdk }: { sdk: SDK<Schema> }) {
     const {
@@ -18,7 +38,6 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
         setup: { client },
     } = useDojo();
     const state = useDojoStore((state) => state);
-    const entities = useDojoStore((state) => state.entities);
 
     const { spawn } = useSystemCalls();
 
@@ -34,18 +53,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
             const subscription = await sdk.subscribeEntityQuery(
                 {
                     dojo_starter: {
-                        Moves: {
-                            $: {
-                                where: {
-                                    player: {
-                                        $is: addAddressPadding(
-                                            account.account.address
-                                        ),
-                                    },
-                                },
-                            },
-                        },
-                        Position: {
+                        Beast: {
                             $: {
                                 where: {
                                     player: {
@@ -68,7 +76,6 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
                         response.data &&
                         response.data[0].entityId !== "0x0"
                     ) {
-                        console.log("subscribed", response.data[0]);
                         state.updateEntity(response.data[0]);
                     }
                 },
@@ -93,7 +100,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
                 await sdk.getEntities(
                     {
                         dojo_starter: {
-                            Moves: {
+                            Beast: {
                                 $: {
                                     where: {
                                         player: {
@@ -127,189 +134,221 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
         fetchEntities();
     }, [sdk, account?.account.address]);
 
-    const moves = useModel(entityId, Models.Moves);
-    const position = useModel(entityId, Models.Position);
+    const [currentImage, setCurrentImage] = useState(happy);
+
+    const showAnimationWithoutTimer = (gifPath: string) => {
+        setCurrentImage(gifPath);
+    };
+
+    const showAnimation = (gifPath: string) => {
+        setCurrentImage(gifPath);
+        setTimeout(() => {
+            setCurrentImage(happy);
+        }, 1000000);
+    };
+
+    const showDeathAnimation = () => {
+        setCurrentImage(dead);
+    };
+
+    const beast = useModel(entityId, Models.Beast);
+    console.log(beast);
+
+    useEffect(() => {
+        const interval = setInterval(async () => {
+            if (beast?.is_alive) {
+                await client.actions.decreaseStats(account.account);
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [beast?.is_alive]);
+
+    useEffect(() => {
+        console.log('Rolooo');
+        console.log(beast?.is_alive);
+        if (beast?.is_alive == false) {
+            showDeathAnimation();
+        }
+    }, [beast?.is_alive]);
 
     return (
-        <div className="bg-black min-h-screen w-full p-4 sm:p-8">
-            <ControllerConnectButton />
-            <div className="max-w-7xl mx-auto">
-                <button
-                    className="mb-4 px-4 py-2 bg-blue-600 text-white text-sm sm:text-base rounded-md hover:bg-blue-700 transition-colors duration-300"
-                    onClick={() => account?.create()}
-                >
-                    {account?.isDeploying
-                        ? "Deploying Burner..."
-                        : "Create Burner"}
-                </button>
-
-                <div className="bg-gray-800 shadow-md rounded-lg p-4 sm:p-6 mb-6 w-full max-w-md">
-                    <div className="text-lg sm:text-xl font-semibold mb-4 text-white">{`Burners Deployed: ${account.count}`}</div>
-                    <div className="mb-4">
-                        <label
-                            htmlFor="signer-select"
-                            className="block text-sm font-medium text-gray-300 mb-2"
-                        >
-                            Select Signer:
-                        </label>
-                        <select
-                            id="signer-select"
-                            className="w-full px-3 py-2 text-base text-gray-200 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            value={account ? account.account.address : ""}
-                            onChange={(e) => account.select(e.target.value)}
-                        >
-                            {account?.list().map((account, index) => (
-                                <option value={account.address} key={index}>
-                                    {account.address}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <button
-                        className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 text-base rounded transition duration-300 ease-in-out"
-                        onClick={() => account.clear()}
-                    >
-                        Clear Burners
-                    </button>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-                    <div className="bg-gray-700 p-4 rounded-lg shadow-inner">
-                        <div className="grid grid-cols-3 gap-2 w-full h-48">
-                            <div className="col-start-2">
-                                <button
-                                    className="h-12 w-12 bg-gray-600 rounded-full shadow-md active:shadow-inner active:bg-gray-500 focus:outline-none text-2xl font-bold text-gray-200"
-                                    onClick={async () => await spawn()}
-                                >
-                                    +
-                                </button>
-                            </div>
-                            <div className="col-span-3 text-center text-base text-white">
-                                Moves Left:{" "}
-                                {moves ? `${moves.remaining}` : "Need to Spawn"}
-                            </div>
-                            <div className="col-span-3 text-center text-base text-white">
-                                {position
-                                    ? `x: ${position?.vec?.x}, y: ${position?.vec?.y}`
-                                    : "Need to Spawn"}
-                            </div>
-                            <div className="col-span-3 text-center text-base text-white">
-                                {moves && moves.last_direction}
-                            </div>
+        <div className="App">
+            <Background />
+            <Header />
+            {
+                beast
+                    ? <div className="tamaguchi">
+                        <div className="section-title title-style-two text-center">
+                            <span>Byte Beasts</span>
+                            <h2>BabyBeast <span>Lvl {beast.level}</span></h2>
                         </div>
-                    </div>
+                        <Card>
+                            <CardContent>
+                                <div className="space-y-6">
 
-                    <div className="bg-gray-700 p-4 rounded-lg shadow-inner">
-                        <div className="grid grid-cols-3 gap-2 w-full h-48">
-                            {[
-                                {
-                                    direction: "Up" as const,
-                                    label: "↑",
-                                    col: "col-start-2",
-                                },
-                                {
-                                    direction: "Left" as const,
-                                    label: "←",
-                                    col: "col-start-1",
-                                },
-                                {
-                                    direction: "Right" as const,
-                                    label: "→",
-                                    col: "col-start-3",
-                                },
-                                {
-                                    direction: "Down" as const,
-                                    label: "↓",
-                                    col: "col-start-2",
-                                },
-                            ].map(({ direction, label, col }) => (
-                                <button
-                                    className={`${col} h-12 w-12 bg-gray-600 rounded-full shadow-md active:shadow-inner active:bg-gray-500 focus:outline-none text-2xl font-bold text-gray-200`}
-                                    key={direction}
-                                    onClick={async () => {
-                                        await client.actions.move({
-                                            account: account.account,
-                                            direction: { type: direction },
-                                        });
-                                    }}
-                                >
-                                    {label}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                </div>
+                                    {/* Centered Tamagotchi Image */}
+                                    <div className="flex justify-center items-column mt-3 mb-0">
+                                        <img src={currentImage} alt="Tamagotchi" className="w-40 h-40" />
 
-                <div className="mt-8 overflow-x-auto">
-                    <table className="w-full border-collapse border border-gray-700">
-                        <thead>
-                            <tr className="bg-gray-800 text-white">
-                                <th className="border border-gray-700 p-2">
-                                    Entity ID
-                                </th>
-                                <th className="border border-gray-700 p-2">
-                                    Player
-                                </th>
-                                <th className="border border-gray-700 p-2">
-                                    Position X
-                                </th>
-                                <th className="border border-gray-700 p-2">
-                                    Position Y
-                                </th>
-                                <th className="border border-gray-700 p-2">
-                                    Can Move
-                                </th>
-                                <th className="border border-gray-700 p-2">
-                                    Last Direction
-                                </th>
-                                <th className="border border-gray-700 p-2">
-                                    Remaining Moves
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {Object.entries(entities).map(
-                                ([entityId, entity]) => {
-                                    const position =
-                                        entity.models.dojo_starter.Position;
-                                    const moves =
-                                        entity.models.dojo_starter.Moves;
+                                    </div>
 
-                                    return (
-                                        <tr
-                                            key={entityId}
-                                            className="text-gray-300"
+                                    {/* Hunger Bar */}
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <Heart className="text-red-500" />
+                                        <Progress value={beast.energy} />
+                                        <span className="w-12 text-right font-medium text-white">{Math.round(beast.energy)}%</span>
+                                    </div>
+                                    <p className="info mt-0">Energy</p>
+
+                                    {/* Energy Bar */}
+                                    <div className="flex items-center gap-2 mt-2 mb-1">
+                                        <Coffee className="text-yellow-600" />
+                                        <Progress value={beast.hunger} />
+                                        <span className="w-12 text-right font-medium text-white">{Math.round(beast.hunger)}%</span>
+                                    </div>
+                                    <p className="info mt-0">Hunger</p>
+
+                                    {/* Happiness Bar */}
+                                    <div className="flex items-center gap-2 mt-2 mb-1">
+                                        <Gamepad2 className="text-green-500" />
+                                        <Progress value={beast.happiness} />
+                                        <span className="w-12 text-right font-medium text-white">{Math.round(beast.happiness)}%</span>
+                                    </div>
+                                    <p className="info mt-0">Happiness</p>
+
+                                    {/* Hygiene Bar */}
+                                    <div className="flex items-center gap-2 mt-2 mb-1">
+                                        <Bath className="text-blue-500" />
+                                        <Progress value={beast.hygiene} />
+                                        <span className="w-12 text-right font-medium text-white">{Math.round(beast.hygiene)}%</span>
+                                    </div>
+                                    <p className="info mt-0">Hygiene</p>
+
+                                    {/* Action Buttons */}
+                                    <p className='title mt-5'>
+                                        Keep your BabyBeast happy and healthy
+                                        <span> Interact with him and level him up!</span>
+                                    </p>
+                                    <div className="grid grid-cols-2 gap-6 mt-3 mb-0">
+                                        <Button
+                                            onClick={async () => {
+                                                await client.actions.feed(account.account);
+                                                if (beast.is_alive) showAnimation(eat);
+                                                scrollToTop();
+                                            }}
+                                            disabled={!beast.is_alive}
+                                            className="flex items-center gap-2 button"
                                         >
-                                            <td className="border border-gray-700 p-2">
-                                                {entityId}
-                                            </td>
-                                            <td className="border border-gray-700 p-2">
-                                                {position?.player ?? "N/A"}
-                                            </td>
-                                            <td className="border border-gray-700 p-2">
-                                                {position?.vec?.x ?? "N/A"}
-                                            </td>
-                                            <td className="border border-gray-700 p-2">
-                                                {position?.vec?.y ?? "N/A"}
-                                            </td>
-                                            <td className="border border-gray-700 p-2">
-                                                {moves?.can_move?.toString() ??
-                                                    "N/A"}
-                                            </td>
-                                            <td className="border border-gray-700 p-2">
-                                                {moves?.last_direction ?? "N/A"}
-                                            </td>
-                                            <td className="border border-gray-700 p-2">
-                                                {moves?.remaining ?? "N/A"}
-                                            </td>
-                                        </tr>
-                                    );
-                                }
-                            )}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                                            <Pizza /> Feed
+                                        </Button>
+                                        <Button
+                                            onClick={async () => {
+                                                await client.actions.sleep(account.account);
+                                                if (beast.is_alive) showAnimationWithoutTimer(sleep);
+                                                scrollToTop();
+                                            }}
+                                            disabled={!beast.is_alive}
+                                            className="flex items-center gap-2 button"
+                                        >
+                                            <Coffee /> Sleep
+                                        </Button>
+                                        <Button
+                                            onClick={async () => {
+                                                await client.actions.play(account.account);
+                                                if (beast.is_alive) showAnimation(play);
+                                                scrollToTop();
+                                            }}
+                                            disabled={!beast.is_alive}
+                                            className="flex items-center gap-2 button"
+                                        >
+                                            <Gamepad2 /> Play
+                                        </Button>
+                                        <Button
+                                            onClick={async () => {
+                                                await client.actions.clean(account.account);
+                                                if (beast.is_alive) showAnimation(shower);
+                                                scrollToTop();
+                                            }}
+                                            disabled={!beast.is_alive}
+                                            className="flex items-center gap-2 button"
+                                        >
+                                            <Bath /> Clean
+                                        </Button>
+                                        <Button
+                                            onClick={async () => {
+                                                await client.actions.awake(account.account);
+                                                if (beast.is_alive) setCurrentImage(happy);
+                                                scrollToTop();
+                                            }}
+                                            disabled={!beast.is_alive}
+                                            className="flex items-center gap-2 button"
+                                        >
+                                            <Sun /> Wake Up
+                                        </Button>
+                                        <Button
+                                            onClick={async () => {
+                                                await client.actions.revive(account.account);
+                                                setCurrentImage(happy);
+                                                scrollToTop();
+                                            }}
+                                            disabled={beast.is_alive}
+                                            className="flex items-center gap-2 button"
+                                        >
+                                            <Sun /> Revive
+                                        </Button>
+                                    </div>
+                                    <p className="info mt-3 mb-5">You can revive your baby beast, but this one is gonna loose the experience earhed</p>
+
+
+                                    <p className='title mt-5 text-center'>
+                                        <span className="d-block">BabyBeast Stats</span>
+                                        The stats of your BabyBeast will increase with more levels
+                                    </p>
+                                    {/* Hunger Bar */}
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <Swords className="text-red-500" />
+                                        <Progress value={beast.attack} />
+                                        <span className="w-12 text-right font-medium text-white">{Math.round(beast.attack)}</span>
+                                    </div>
+                                    <p className="info mt-0">Attack</p>
+
+                                    {/* Energy Bar */}
+                                    <div className="flex items-center gap-2 mt-2 mb-1">
+                                        <ShieldPlus className="text-yellow-600" />
+                                        <Progress value={beast.defense} />
+                                        <span className="w-12 text-right font-medium text-white">{Math.round(beast.defense)}</span>
+                                    </div>
+                                    <p className="info mt-0">Defense</p>
+
+                                    {/* Happiness Bar */}
+                                    <div className="flex items-center gap-2 mt-2 mb-1">
+                                        <CircleGauge className="text-green-500" />
+                                        <Progress value={beast.speed} />
+                                        <span className="w-12 text-right font-medium text-white">{Math.round(beast.speed)}</span>
+                                    </div>
+                                    <p className="info mt-0">Speed</p>
+
+                                    {/* Hygiene Bar */}
+                                    <div className="flex items-center gap-2 mt-2 mb-1">
+                                        <TestTubeDiagonal className="text-blue-500" />
+                                        <Progress value={beast.experience} />
+                                        <span className="w-12 text-right font-medium text-white">{(beast.experience)}</span>
+                                    </div>
+                                    <p className="info mt-0">{beast.next_level_experience} experience points to reach next level</p>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </div>
+                    :
+                    <>
+                        <Play />
+                        <button onClick={async () => spawn()} className="button">Spawn a BabyBeast</button>
+                    </>
+
+            }
+
+            <Footer />
         </div>
     );
 }

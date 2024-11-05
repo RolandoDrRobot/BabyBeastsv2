@@ -1,110 +1,224 @@
-use dojo_starter::models::{Direction, Position};
+use dojo_starter::models::Beast;
 
-// define the interface
 #[starknet::interface]
 trait IActions<T> {
     fn spawn(ref self: T);
-    fn move(ref self: T, direction: Direction);
+    fn decrease_stats(ref self: T);
+    fn feed(ref self: T);
+    fn sleep(ref self: T);
+    fn awake(ref self: T);
+    fn play(ref self: T);
+    fn clean(ref self: T);
+    fn revive(ref self: T);
 }
 
-// dojo decorator
 #[dojo::contract]
 pub mod actions {
-    use super::{IActions, Direction, Position, next_position};
+    use super::{IActions};
     use starknet::{ContractAddress, get_caller_address};
-    use dojo_starter::models::{Vec2, Moves, DirectionsAvailable};
+    use dojo_starter::models::{Beast};
 
     use dojo::model::{ModelStorage, ModelValueStorage};
     use dojo::event::EventStorage;
 
-    #[derive(Copy, Drop, Serde)]
-    #[dojo::event]
-    pub struct Moved {
-        #[key]
-        pub player: ContractAddress,
-        pub direction: Direction,
-    }
-
     #[abi(embed_v0)]
     impl ActionsImpl of IActions<ContractState> {
         fn spawn(ref self: ContractState) {
-            // Get the default world.
-            let mut world = self.world_default();
-
-            // Get the address of the current caller, possibly the player's address.
-            let player = get_caller_address();
-            // Retrieve the player's current position from the world.
-            let position: Position = world.read_model(player);
-
-            // Update the world state with the new data.
-
-            // 1. Move the player's position 10 units in both the x and y direction.
-            let new_position = Position {
-                player, vec: Vec2 { x: position.vec.x + 10, y: position.vec.y + 10 }
-            };
-
-            // Write the new position to the world.
-            world.write_model(@new_position);
-
-            // 2. Set the player's remaining moves to 100.
-            let moves = Moves {
-                player, remaining: 100, last_direction: Direction::None(()), can_move: true
-            };
-
-            // Write the new moves to the world.
-            world.write_model(@moves);
-        }
-
-        // Implementation of the move function for the ContractState struct.
-        fn move(ref self: ContractState, direction: Direction) {
-            // Get the address of the current caller, possibly the player's address.
-
-            let mut world = self.world_default();
-
+            let mut world = self.world(@"dojo_starter");
             let player = get_caller_address();
 
-            // Retrieve the player's current position and moves data from the world.
-            let position: Position = world.read_model(player);
-            let mut moves: Moves = world.read_model(player);
+            let initial_stats = Beast {
+                player: player,
+                is_alive: true,
+                is_awake: true,
+                hunger: 100,
+                max_hunger: 100,
+                energy: 100,
+                max_energy: 100,
+                happiness: 100,
+                max_happiness: 100,
+                hygiene: 100,
+                max_hygiene: 100,
+                attack: 5,
+                defense: 5,
+                speed: 5,
+                level: 1,
+                experience: 0,
+                next_level_experience: 60,
+            };
 
-            // Deduct one from the player's remaining moves.
-            moves.remaining -= 1;
+            world.write_model(@initial_stats);
+        }
 
-            // Update the last direction the player moved in.
-            moves.last_direction = direction;
+        fn decrease_stats(ref self: ContractState) {
+            let mut world = self.world(@"dojo_starter");
+            let player = get_caller_address();
+            let mut beast: Beast = world.read_model(player);
 
-            // Calculate the player's next position based on the provided direction.
-            let next = next_position(position, direction);
+            if beast.is_alive == true {
+                if beast.happiness == 0 || beast.hygiene == 0 {
+                    beast.energy = beast.energy - 2;
+                } else {
+                    beast.energy = beast.energy - 1;
+                }
+                if beast.energy < 0 {
+                    beast.energy = 0;
+                }
 
-            // Write the new position to the world.
-            world.write_model(@next);
+                beast.hunger = beast.hunger - 2;
+                if beast.hunger < 0 {
+                    beast.hunger = 0;
+                }
 
-            // Write the new moves to the world.
-            world.write_model(@moves);
+                beast.happiness = beast.happiness - 1;
+                if beast.happiness < 0 {
+                    beast.happiness = 0;
+                }
 
-            // Emit an event to the world to notify about the player's move.
-            world.emit_event(@Moved { player, direction });
+                beast.hygiene = beast.hygiene - 1;
+                if beast.hygiene < 0 {
+                    beast.hygiene = 0;
+                }
+
+                if beast.energy == 0 || beast.hunger == 0 {
+                    beast.is_alive = false;
+                }
+
+                world.write_model(@beast);
+            }
+        }
+
+        fn feed(ref self: ContractState) {
+            let mut world = self.world(@"dojo_starter");
+            let player = get_caller_address();
+            let mut beast: Beast = world.read_model(player);
+
+            if beast.is_alive == true {
+                beast.hunger = beast.hunger + 30;
+                if beast.hunger > beast.max_hunger {
+                    beast.hunger = beast.max_hunger;
+                }
+                beast.energy = beast.energy + 10;
+                if beast.energy > beast.max_energy {
+                    beast.energy = beast.max_energy;
+                }
+                world.write_model(@beast);
+            }
+        }
+
+        fn sleep(ref self: ContractState) {
+            let mut world = self.world(@"dojo_starter");
+            let player = get_caller_address();
+            let mut beast: Beast = world.read_model(player);
+
+            if beast.is_alive == true {
+                beast.energy = beast.energy + 40;
+                if beast.energy > beast.max_energy {
+                    beast.energy = beast.max_energy;
+                }
+                beast.happiness = beast.happiness + 10;
+                if beast.happiness > beast.max_happiness {
+                    beast.happiness = beast.max_happiness;
+                }
+                beast.is_awake = false;
+                world.write_model(@beast);
+            }
+        }
+
+        fn awake(ref self: ContractState) {
+            let mut world = self.world(@"dojo_starter");
+            let player = get_caller_address();
+            let mut beast: Beast = world.read_model(player);
+
+            if beast.is_alive == true {
+                beast.is_awake = true;
+                world.write_model(@beast);
+            }
+        }
+
+        fn play(ref self: ContractState) {
+            let mut world = self.world(@"dojo_starter");
+            let player = get_caller_address();
+            let mut beast: Beast = world.read_model(player);
+
+            if beast.is_alive == true {
+                beast.happiness = beast.happiness + 30;
+                if beast.happiness > beast.max_happiness {
+                    beast.happiness = beast.max_happiness;
+                }
+                beast.energy = beast.energy - 20;
+                beast.hunger = beast.hunger - 10;
+
+                beast.experience = beast.experience + 10;
+                if beast.experience >= beast.next_level_experience {
+                    beast.level = beast.level + 1;
+                    beast.experience = 0;
+                    beast.next_level_experience = beast.next_level_experience + 20;
+                }
+                world.write_model(@beast);
+            }
+        }
+
+        fn clean(ref self: ContractState) {
+            let mut world = self.world(@"dojo_starter");
+            let player = get_caller_address();
+            let mut beast: Beast = world.read_model(player);
+
+            if beast.is_alive == true {
+                beast.hygiene = beast.hygiene + 40;
+                if beast.hygiene > beast.max_hygiene {
+                    beast.hygiene = beast.max_hygiene;
+                }
+                beast.happiness = beast.happiness + 10;
+                if beast.happiness > beast.max_happiness {
+                    beast.happiness = beast.max_happiness;
+                }
+                beast.experience = beast.experience + 10;
+                if beast.experience >= beast.next_level_experience {
+                    beast.level = beast.level + 1;
+                    beast.experience = 0;
+                    beast.next_level_experience = beast.next_level_experience + 20;
+                    beast.attack = beast.attack + 1;
+                    beast.defense = beast.defense + 1;
+                    beast.speed = beast.speed + 1;
+                }
+                world.write_model(@beast);
+            }
+        }
+
+        fn revive(ref self: ContractState) {
+            let mut world = self.world(@"dojo_starter");
+            let player = get_caller_address();
+            let mut beast: Beast = world.read_model(player);
+
+            if beast.is_alive == false {
+                beast.is_alive = true;
+                beast.hunger = 100;
+                beast.energy = 100;
+                beast.happiness = 100;
+                beast.hygiene = 100;
+                beast.experience = 0;
+
+                if beast.attack < 0 {
+                    beast.attack = 0;
+                } else {
+                    beast.attack = beast.attack - 1;
+                }
+
+                if beast.defense < 0 {
+                    beast.defense = 0;
+                } else {
+                    beast.defense = beast.defense - 1;
+                }
+
+                if beast.speed < 0 {
+                    beast.speed = 0;
+                } else {
+                    beast.speed = beast.speed - 1;
+                }
+
+                world.write_model(@beast);
+            }
         }
     }
-
-    #[generate_trait]
-    impl InternalImpl of InternalTrait {
-        /// Use the default namespace "dojo_starter". This function is handy since the ByteArray
-        /// can't be const.
-        fn world_default(self: @ContractState) -> dojo::world::WorldStorage {
-            self.world(@"dojo_starter")
-        }
-    }
-}
-
-// Define function like this:
-fn next_position(mut position: Position, direction: Direction) -> Position {
-    match direction {
-        Direction::None => { return position; },
-        Direction::Left => { position.vec.x -= 1; },
-        Direction::Right => { position.vec.x += 1; },
-        Direction::Up => { position.vec.y -= 1; },
-        Direction::Down => { position.vec.y += 1; },
-    };
-    position
 }

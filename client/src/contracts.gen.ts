@@ -8,56 +8,144 @@ export type IClient = Awaited<ReturnType<typeof client>>;
 
 export function client(provider: DojoProvider) {
     // System definitions for `dojo_starter-actions` contract
-    function actions() {
-        const contract_name = "actions";
+    const actions_spawn = async (account: Account) => {
+        try {
+            return await provider.execute(
+                account,
+                {
+                    contractName: "actions",
+                    entrypoint: "spawn",
+                    calldata: [],
+                },
+                "dojo_starter"
+            );
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-        // Call the `spawn` system with the specified Account and calldata
-        const spawn = async (props: { account: Account }) => {
-            try {
-                return await provider.execute(
-                    props.account,
-                    {
-                        contractName: contract_name,
-                        entrypoint: "spawn",
-                        calldata: [],
-                    },
-                    "dojo_starter"
-                );
-            } catch (error) {
-                console.error("Error executing spawn:", error);
-                throw error;
-            }
-        };
+    const actions_decreaseStats = async (account: Account) => {
+        try {
+            return await provider.execute(
+                account,
+                {
+                    contractName: "actions",
+                    entrypoint: "decrease_stats",
+                    calldata: [],
+                },
+                "dojo_starter"
+            );
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-        // Call the `move` system with the specified Account and calldata
-        const move = async (props: { account: Account; direction: any }) => {
-            try {
-                return await provider.execute(
-                    props.account,
-                    {
-                        contractName: contract_name,
-                        entrypoint: "move",
-                        calldata: [
-                            ["None", "Left", "Right", "Up", "Down"].indexOf(
-                                props.direction.type
-                            ),
-                        ],
-                    },
-                    "dojo_starter"
-                );
-            } catch (error) {
-                console.error("Error executing spawn:", error);
-                throw error;
-            }
-        };
+    const actions_feed = async (account: Account) => {
+        try {
+            return await provider.execute(
+                account,
+                {
+                    contractName: "actions",
+                    entrypoint: "feed",
+                    calldata: [],
+                },
+                "dojo_starter"
+            );
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-        return {
-            spawn,
-            move,
-        };
-    }
+    const actions_sleep = async (account: Account) => {
+        try {
+            return await provider.execute(
+                account,
+                {
+                    contractName: "actions",
+                    entrypoint: "sleep",
+                    calldata: [],
+                },
+                "dojo_starter"
+            );
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const actions_awake = async (account: Account) => {
+        try {
+            return await provider.execute(
+                account,
+                {
+                    contractName: "actions",
+                    entrypoint: "awake",
+                    calldata: [],
+                },
+                "dojo_starter"
+            );
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const actions_play = async (account: Account) => {
+        try {
+            return await provider.execute(
+                account,
+                {
+                    contractName: "actions",
+                    entrypoint: "play",
+                    calldata: [],
+                },
+                "dojo_starter"
+            );
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const actions_clean = async (account: Account) => {
+        try {
+            return await provider.execute(
+                account,
+                {
+                    contractName: "actions",
+                    entrypoint: "clean",
+                    calldata: [],
+                },
+                "dojo_starter"
+            );
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const actions_revive = async (account: Account) => {
+        try {
+            return await provider.execute(
+                account,
+                {
+                    contractName: "actions",
+                    entrypoint: "revive",
+                    calldata: [],
+                },
+                "dojo_starter"
+            );
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     return {
-        actions: actions(),
+        actions: {
+            spawn: actions_spawn,
+            decreaseStats: actions_decreaseStats,
+            feed: actions_feed,
+            sleep: actions_sleep,
+            awake: actions_awake,
+            play: actions_play,
+            clean: actions_clean,
+            revive: actions_revive,
+        },
     };
 }

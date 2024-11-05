@@ -53,7 +53,7 @@ export interface Schema extends SchemaType {
 	},
 }
 
-export enum Models {
+enum Models {
     Beast = "dojo_starter-Beast",
 }
 
