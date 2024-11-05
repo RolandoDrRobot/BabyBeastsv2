@@ -10,6 +10,17 @@ import { dojoConfig } from "../dojoConfig.ts";
 import { DojoContextProvider } from "./DojoContext.tsx";
 import { setupBurnerManager } from "@dojoengine/create-burner";
 
+import { Chain, sepolia } from "@starknet-react/chains";
+import { StarknetConfig, starkscan } from "@starknet-react/core";
+import { RpcProvider } from "starknet";
+import cartridgeConnector from "./cartridgeConnector.tsx";
+
+function provider(chain: Chain) {
+    return new RpcProvider({
+        nodeUrl: "https://api.cartridge.gg/x/starknet/sepolia",
+    });
+}
+
 async function main() {
     const sdk = await init<Schema>(
         {
@@ -34,7 +45,15 @@ async function main() {
             <DojoContextProvider
                 burnerManager={await setupBurnerManager(dojoConfig)}
             >
-                <App sdk={sdk} />
+                <StarknetConfig
+                    autoConnect
+                    chains={[sepolia]}
+                    connectors={[cartridgeConnector]}
+                    explorer={starkscan}
+                    provider={provider}
+                >
+                    <App sdk={sdk} />
+                </StarknetConfig>
             </DojoContextProvider>
         </StrictMode>
     );

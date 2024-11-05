@@ -8,6 +8,8 @@ import { useDojo } from "./useDojo.tsx";
 import useModel from "./useModel.tsx";
 import { useSystemCalls } from "./useSystemCalls.ts";
 
+import ControllerConnectButton from './components/CartridgeController/ControllerConnectButton.tsx';
+
 export const useDojoStore = createDojoStore<Schema>();
 
 function App({ sdk }: { sdk: SDK<Schema> }) {
@@ -130,6 +132,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
 
     return (
         <div className="bg-black min-h-screen w-full p-4 sm:p-8">
+            <ControllerConnectButton />
             <div className="max-w-7xl mx-auto">
                 <button
                     className="mb-4 px-4 py-2 bg-blue-600 text-white text-sm sm:text-base rounded-md hover:bg-blue-700 transition-colors duration-300"
