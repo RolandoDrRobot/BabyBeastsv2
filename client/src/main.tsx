@@ -10,12 +10,12 @@ import { dojoConfig } from "../dojoConfig.ts";
 import { DojoContextProvider } from "./DojoContext.tsx";
 import { setupBurnerManager } from "@dojoengine/create-burner";
 
-import { Chain, sepolia } from "@starknet-react/chains";
+import { sepolia } from "@starknet-react/chains";
 import { StarknetConfig, starkscan } from "@starknet-react/core";
 import { RpcProvider } from "starknet";
 import cartridgeConnector from "./cartridgeConnector.tsx";
 
-function provider(chain: Chain) {
+function provider() {
     return new RpcProvider({
         nodeUrl: "https://api.cartridge.gg/x/starknet/sepolia",
     });
