@@ -181,10 +181,16 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
           <div className="cover">
             <Play />
             <ControllerConnectButton setAddress={setAddress} />
+            <button
+              disabled={address ? false : true}
+              className="button mt-3 mb-5"
+              onClick={async () => {
+                spawn();
+              }}>Spawn your BabyBeast
+            </button>
           </div>
-          :
-          <div className="tamaguchi">
-            {beast ?
+          : address && beast ?
+            <div className="tamaguchi">
               <>
                 <div className="section-title title-style-two text-center">
                   <span>Byte Beasts</span>
@@ -345,14 +351,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
                   </CardContent>
                 </Card>
               </>
-              :
-              <button
-                className="button"
-                onClick={async () => {
-                  spawn();
-                }}>Spawn your BabyBeast
-              </button>}
-          </div>
+            </div> : <></>
       }
       <Footer />
     </div>

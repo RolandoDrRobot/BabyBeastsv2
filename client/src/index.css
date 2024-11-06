@@ -53,7 +53,7 @@
   border: 2px solid #e4a101;
   color: #fff;
   padding: 10px 15px;
-  border-radius: 10px;
+  border-radius: 15px;
   transition: all 0.25s;
   cursor: pointer;
   margin: 0;
@@ -64,6 +64,12 @@
 
 .App .button:hover {
   background-color: #e4a101;
+}
+
+.App .button:disabled {
+  background-color: #370001;
+  border: 2px solid #370001;
+  color: #b7b7b7;
 }
 
 .App .cover .connect-btn {
