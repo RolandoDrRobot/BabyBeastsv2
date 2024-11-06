@@ -1,7 +1,12 @@
 import { useConnect, useAccount } from "@starknet-react/core";
 import dojo from '../../img/dojo-icon.svg'
+import React, { SetStateAction } from "react";
 
-const ControllerConnectButton = () => {
+interface ControllerProps {
+  setAddress: React.Dispatch<SetStateAction<string>>;
+}
+
+const ControllerConnectButton = ({ setAddress }:ControllerProps) => {
   const { connect, connectors } = useConnect();
   const { address, status } = useAccount();
 
@@ -18,7 +23,10 @@ const ControllerConnectButton = () => {
         ) : (
           <button
             key={connector.id}
-            onClick={() => connect({ connector })}
+            onClick={() => {
+              connect({ connector });
+              address && setAddress(address);
+            }}
             className="connect-btn"
           >
             Connect
