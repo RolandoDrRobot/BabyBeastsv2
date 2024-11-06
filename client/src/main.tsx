@@ -5,9 +5,9 @@ import App from "./App.tsx";
 
 import "./index.css";
 import { init } from "@dojoengine/sdk";
-import { Schema, schema } from "./bindings.ts";
+import { Schema, schema } from "./dojo/bindings.ts";
 import { dojoConfig } from "../dojoConfig.ts";
-import { DojoContextProvider } from "./DojoContext.tsx";
+import { DojoContextProvider } from "./dojo/DojoContext.tsx";
 import { setupBurnerManager } from "@dojoengine/create-burner";
 
 import { sepolia } from "@starknet-react/chains";
