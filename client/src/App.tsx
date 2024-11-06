@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { SDK, createDojoStore } from "@dojoengine/sdk";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { addAddressPadding } from "starknet";
-import { Beast, Models, Schema } from "./dojo/bindings.ts";
+import { Models, Schema } from "./dojo/bindings.ts";
 import { useDojo } from "./dojo/useDojo.tsx";
 import useModel from "./dojo/useModel.tsx";
 import { useSystemCalls } from "./dojo/useSystemCalls.ts";
@@ -352,8 +352,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
               disabled={address ? false : true}
               className="button mt-3 mb-5"
               onClick={async () => {
-                const spawned = await spawn();
-                
+                spawn()
               }}>Spawn your BabyBeast
             </button>
           </div>
