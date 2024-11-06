@@ -48,6 +48,11 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
     [account?.account.address]
   );
 
+  console.log('Rolooo')
+  console.log(account?.account.address);
+  console.log('Moreeee')
+  console.log(address)
+
   const beastData = useModel(entityId, Models.Beast);
   const [beast, setBeast] = useState(beastData);
 
