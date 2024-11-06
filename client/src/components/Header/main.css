@@ -78,8 +78,8 @@
   align-items: center;
   justify-content: space-center;
   font-size: 14px;
-  border: 2px solid var(--yellow);
-  background-color: var(--yellow);
+  border: 2px solid #e4a101;
+  background-color: #370001;
 }
 
 .connect-btn img {
