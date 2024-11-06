@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { SDK, createDojoStore } from "@dojoengine/sdk";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { addAddressPadding } from "starknet";
-import { Models, Schema } from "./dojo/bindings.ts";
+import { Beast, Models, Schema } from "./dojo/bindings.ts";
 import { useDojo } from "./dojo/useDojo.tsx";
 import useModel from "./dojo/useModel.tsx";
 import { useSystemCalls } from "./dojo/useSystemCalls.ts";
@@ -47,6 +47,13 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
     () => getEntityIdFromKeys([BigInt(account?.account.address)]),
     [account?.account.address]
   );
+
+  const beastData = useModel(entityId, Models.Beast);
+  const [beast, setBeast] = useState(beastData);
+
+  useEffect(() => {
+    setBeast(beastData);
+  }, [beastData]);
 
   useEffect(() => {
     let unsubscribe: (() => void) | undefined;
@@ -153,10 +160,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
     setCurrentImage(dead);
   };
 
-
-
-  // Fetch the beast
-  const beast = useModel(entityId, Models.Beast);
+  
   useEffect(() => {
     const interval = setInterval(async () => {
       if (beast?.is_alive) {
@@ -348,7 +352,8 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
               disabled={address ? false : true}
               className="button mt-3 mb-5"
               onClick={async () => {
-                spawn();
+                const spawned = await spawn();
+                
               }}>Spawn your BabyBeast
             </button>
           </div>
