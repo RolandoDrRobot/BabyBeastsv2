@@ -1,14 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { SDK, createDojoStore } from "@dojoengine/sdk";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
-import { addAddressPadding } from "starknet";
+import { Account, addAddressPadding } from "starknet";
 import { Models, Schema } from "./dojo/bindings.ts";
-// import { useDojo } from "./dojo/useDojo.tsx";
+import { useDojo } from "./dojo/useDojo.tsx";
 import useModel from "./dojo/useModel.tsx";
 import { useSystemCalls } from "./dojo/useSystemCalls.ts";
 import { Card, CardContent } from './components/ui/card.tsx';
 import { Progress } from './components/ui/progress';
 import { Button } from './components/ui/button';
+import { useAccount } from "@starknet-react/core";
 import { Heart, Pizza, Coffee, Bath, Gamepad2, Sun, Swords, ShieldPlus, TestTubeDiagonal, CircleGauge, } from 'lucide-react';
 import Background from "./components/Background/index";
 
@@ -23,8 +24,6 @@ import Footer from "./components/Footer/index.tsx";
 import Play from "./components/Play/index.tsx";
 import ControllerConnectButton from "./components/CartridgeController/ControllerConnectButton.tsx";
 
-import { useAccount } from "@starknet-react/core";
-
 export const useDojoStore = createDojoStore<Schema>();
 
 function scrollToTop() {
@@ -37,13 +36,10 @@ function scrollToTop() {
 function App({ sdk }: { sdk: SDK<Schema> }) {
   const [address, setAddress] = useState('');
   const { account } = useAccount();
-  console.log(account);
 
-  // Dojo
-  // const {
-  //   account,
-  //   setup: { client },
-  // } = useDojo();
+  const {
+    setup: { client },
+  } = useDojo();
   const { spawn } = useSystemCalls();
   const state = useDojoStore((state) => state);
 
@@ -54,7 +50,8 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
 
   console.log('Rolooo')
   console.log('Moreeee')
-  console.log(address)
+  console.log(address);
+  console.log(account)
 
   const beastData = useModel(entityId, Models.Beast);
   const [beast, setBeast] = useState(beastData);
@@ -64,7 +61,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
   }, [beastData]);
 
   useEffect(() => {
-    if (!address) return
+    if (!account) return
     let unsubscribe: (() => void) | undefined;
 
     const subscribe = async () => {
@@ -77,7 +74,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
                 where: {
                   player: {
                     $is: addAddressPadding(
-                      address
+                      account.address
                     ),
                   },
                 },
@@ -111,10 +108,10 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
         unsubscribe();
       }
     };
-  }, [sdk, address]);
+  }, [sdk, account]);
 
   useEffect(() => {
-    if (!address) return
+    if (!account) return
     const fetchEntities = async () => {
       try {
         await sdk.getEntities(
@@ -125,7 +122,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
                   where: {
                     player: {
                       $eq: addAddressPadding(
-                        address
+                        account.address
                       ),
                     },
                   },
@@ -152,7 +149,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
     };
 
     fetchEntities();
-  }, [sdk, address]);
+  }, [sdk, account]);
 
 
 
@@ -174,8 +171,8 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
   
   useEffect(() => {
     const interval = setInterval(async () => {
-      if (beast?.is_alive) {
-        // await client.actions.decreaseStats(account.account);
+      if (beast?.is_alive && account) {
+        await client.actions.decreaseStats(account as Account);
       }
     }, 1000);
 
@@ -249,7 +246,9 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
                     <div className="grid grid-cols-2 gap-6 mt-3 mb-0">
                       <Button
                         onClick={async () => {
-                          // await client.actions.feed(account.account);
+                          if (account) {
+                            await client.actions.feed(account as Account);
+                          }
                           if (beast.is_alive) showAnimation(eat);
                           scrollToTop();
                         }}
@@ -260,7 +259,9 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
                       </Button>
                       <Button
                         onClick={async () => {
-                          // await client.actions.sleep(account.account);
+                          if (account) {
+                            await client.actions.sleep(account as Account);
+                          }
                           if (beast.is_alive) showAnimationWithoutTimer(sleep);
                           scrollToTop();
                         }}
@@ -271,7 +272,9 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
                       </Button>
                       <Button
                         onClick={async () => {
-                          // await client.actions.play(account.account);
+                          if (account) {
+                            await client.actions.play(account as Account);
+                          }
                           if (beast.is_alive) showAnimation(play);
                           scrollToTop();
                         }}
@@ -282,7 +285,9 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
                       </Button>
                       <Button
                         onClick={async () => {
-                          // await client.actions.clean(account.account);
+                          if (account) {
+                            await client.actions.clean(account as Account);
+                          }
                           if (beast.is_alive) showAnimation(shower);
                           scrollToTop();
                         }}
@@ -293,7 +298,9 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
                       </Button>
                       <Button
                         onClick={async () => {
-                          // await client.actions.awake(account.account);
+                          if (account) {
+                            await client.actions.awake(account as Account);
+                          }
                           if (beast.is_alive) setCurrentImage(happy);
                           scrollToTop();
                         }}
@@ -304,7 +311,9 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
                       </Button>
                       <Button
                         onClick={async () => {
-                          // await client.actions.revive(account.account);
+                          if (account) {
+                            await client.actions.revive(account as Account);
+                          }
                           setCurrentImage(happy);
                           scrollToTop();
                         }}
