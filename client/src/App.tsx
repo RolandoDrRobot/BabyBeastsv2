@@ -48,8 +48,6 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
     [address]
   );
 
-  console.log('Rolooo')
-  console.log('Moreeee')
   console.log(address);
   console.log(account)
 
