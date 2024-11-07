@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Account } from "starknet";
 
 export const useSystemCalls = () => {
-    const spawn = async (account: Account) => {
+    const spawn = async ({ account}: { account: Account }) => {
         const state = useDojoStore((state) => state);
         const {
             setup: { client },

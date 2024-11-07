@@ -185,7 +185,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
   return (
     <div className="App">
       <Background />
-      <Header address={address} />
+      <Header />
       {
         address && beast ?
           <div className="tamaguchi">
@@ -370,7 +370,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
               disabled={address ? false : true}
               className="button mt-3 mb-5"
               onClick={async () => {
-                await spawn(account as Account);
+                await spawn({ account: account as Account });
               }}>Spawn your BabyBeast
             </button>
           </div>
