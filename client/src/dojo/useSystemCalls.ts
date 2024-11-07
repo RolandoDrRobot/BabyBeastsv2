@@ -2,20 +2,19 @@ import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useDojoStore } from "../App";
 import { useDojo } from "./useDojo";
 import { v4 as uuidv4 } from "uuid";
+import { Account } from "starknet";
 
 export const useSystemCalls = () => {
-    const state = useDojoStore((state) => state);
+    const spawn = async (account: Account) => {
+        const state = useDojoStore((state) => state);
+        const {
+            setup: { client },
+        } = useDojo();
 
-    const {
-        setup: { client },
-        account: { account },
-    } = useDojo();
+        const generateEntityId = () => {
+            return getEntityIdFromKeys([BigInt(account?.address)]);
+        };
 
-    const generateEntityId = () => {
-        return getEntityIdFromKeys([BigInt(account?.address)]);
-    };
-
-    const spawn = async () => {
         // Generate a unique entity ID
         const entityId = generateEntityId();
         console.log(entityId);
