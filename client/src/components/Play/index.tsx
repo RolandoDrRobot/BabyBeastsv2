@@ -1,5 +1,5 @@
 import coinIcon from '../../img/orb.gif';
-import fight from '../../img/fight.png';
+import fight from '../../img/banner.jpeg';
 import './main.css';
 
 function Play() {
@@ -9,7 +9,7 @@ function Play() {
         <div className="new-contract-box section-tab yellow-border">
           <div className="section-title title-style-two text-center">
             <span>Byte Builders Labs</span>
-            <h2>Tamaguchi <span>BabyBeast</span></h2>
+            <h2>Baby <span>Beast</span></h2>
           </div>
           <div className='d-flex align-items-center mt-4 mb-2'>
             <div className='col-9 mb-3 text-left'>
