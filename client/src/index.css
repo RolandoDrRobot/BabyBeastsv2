@@ -41,7 +41,7 @@
 
 .App {
   text-align: center;
-  padding: 80px 20px 50px;
+  padding: 0 20px 50px;
   color: #fff;
   width: 100%;
   max-width: 380px;
@@ -119,7 +119,7 @@
 .title-style-two {
   padding-bottom: 35px;
   position: relative;
-  margin: 30px auto 40px;
+  margin: 12px auto 40px;
 }
 
 .title-style-two::before {
