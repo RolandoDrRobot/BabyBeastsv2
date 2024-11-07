@@ -3,7 +3,7 @@ import { SDK, createDojoStore } from "@dojoengine/sdk";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { addAddressPadding } from "starknet";
 import { Models, Schema } from "./dojo/bindings.ts";
-import { useDojo } from "./dojo/useDojo.tsx";
+// import { useDojo } from "./dojo/useDojo.tsx";
 import useModel from "./dojo/useModel.tsx";
 import { useSystemCalls } from "./dojo/useSystemCalls.ts";
 import { Card, CardContent } from './components/ui/card.tsx';
@@ -40,9 +40,10 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
   console.log(account);
 
   // Dojo
-  const {
-    setup: { client },
-  } = useDojo();
+  // const {
+  //   account,
+  //   setup: { client },
+  // } = useDojo();
   const { spawn } = useSystemCalls();
   const state = useDojoStore((state) => state);
 
