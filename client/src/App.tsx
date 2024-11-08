@@ -370,6 +370,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
               className="button mt-3 mb-5"
               onClick={async () => {
                 await spawn();
+                location.reload();
               }}>Spawn your BabyBeast
             </button>
           </div>
