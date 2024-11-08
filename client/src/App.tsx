@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // import { useEffect, useMemo, useState } from "react";
 import { SDK, createDojoStore } from "@dojoengine/sdk";
 // import { getEntityIdFromKeys } from "@dojoengine/utils";
