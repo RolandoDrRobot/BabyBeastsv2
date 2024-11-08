@@ -34,7 +34,6 @@ function scrollToTop() {
 }
 
 function App({ sdk }: { sdk: SDK<Schema> }) {
-  const [address, setAddress] = useState('');
   const { account } = useAccount();
 
   const {
@@ -44,8 +43,8 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
   const state = useDojoStore((state) => state);
 
   const entityId = useMemo(
-    () => getEntityIdFromKeys([BigInt(address.toString())]),
-    [address]
+    () => account?.address ? getEntityIdFromKeys([BigInt(account.address)]) : null,
+    [account?.address]
   );
 
   console.log(account);
@@ -164,6 +163,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
     setCurrentImage(dead);
   };
 
+  console.log(beast)
   
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -186,7 +186,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
       <Background />
       <Header />
       {
-        address && beast ?
+        beast ?
           <div className="tamaguchi">
             <>
               <div className="section-title title-style-two text-center">
@@ -364,9 +364,9 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
           :
           <div className="cover">
             <Play />
-            <ControllerConnectButton setAddress={setAddress} />
+            <ControllerConnectButton />
             <button
-              disabled={address ? false : true}
+              disabled={account ? false : true}
               className="button mt-3 mb-5"
               onClick={async () => {
                 await spawn();
