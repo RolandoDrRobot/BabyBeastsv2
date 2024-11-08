@@ -10,6 +10,7 @@ export const useSystemCalls = () => {
             account,
             setup: { client },
         } = useDojo();
+        console.log(account.account);
 
         const generateEntityId = () => {
             return getEntityIdFromKeys([BigInt(account.account.address)]);
