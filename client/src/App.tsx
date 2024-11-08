@@ -1,18 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { useEffect, useMemo, useState } from "react";
 import { SDK, createDojoStore } from "@dojoengine/sdk";
 // import { getEntityIdFromKeys } from "@dojoengine/utils";
-// import { Account } from "starknet";
+import { Account } from "starknet";
 // import { Account, addAddressPadding } from "starknet";
 import { Schema } from "./dojo/bindings.ts";
 // import { Models, Schema } from "./dojo/bindings.ts";
-import { useDojo } from "./dojo/useDojo.tsx";
+// import { useDojo } from "./dojo/useDojo.tsx";
 // import useModel from "./dojo/useModel.tsx";
-// import { useSystemCalls } from "./dojo/useSystemCalls.ts";
+import { useSystemCalls } from "./dojo/useSystemCalls.ts";
 // import { Card, CardContent } from './components/ui/card.tsx';
 // import { Progress } from './components/ui/progress';
 // import { Button } from './components/ui/button';
-// import { useAccount } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 // import { Heart, Pizza, Coffee, Bath, Gamepad2, Sun, Swords, ShieldPlus, TestTubeDiagonal, CircleGauge, } from 'lucide-react';
 import Background from "./components/Background/index";
 
@@ -38,13 +38,12 @@ export const useDojoStore = createDojoStore<Schema>();
 
 function App({ sdk }: { sdk: SDK<Schema> }) {
   const [address, setAddress] = useState('');
-  // const { account } = useAccount();
+  const { account } = useAccount();
 
-  const {
-    account,
-    // setup: { client },
-  } = useDojo();
-  // const { spawn } = useSystemCalls();
+  // const {
+  //   setup: { client },
+  // } = useDojo();
+  const { spawn } = useSystemCalls();
   console.log(sdk);
   // const state = useDojoStore((state) => state);
 
@@ -53,8 +52,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
   //   [address]
   // );
 
-  console.log(address);
-  console.log('', account);
+  console.log(account);
 
   // const beastData = useModel(entityId, Models.Beast);
   // const [beast, setBeast] = useState(beastData);
@@ -372,13 +370,13 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
           <div className="cover">
             <Play />
             <ControllerConnectButton setAddress={setAddress} />
-            {/* <button
+            <button
               disabled={address ? false : true}
               className="button mt-3 mb-5"
               onClick={async () => {
-                await spawn({ account: account });
+                await spawn({ account: account as Account });
               }}>Spawn your BabyBeast
-            </button> */}
+            </button>
           </div>
       }
       <Footer />
