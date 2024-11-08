@@ -369,7 +369,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
               disabled={address ? false : true}
               className="button mt-3 mb-5"
               onClick={async () => {
-                await spawn({ account: account as Account });
+                await spawn();
               }}>Spawn your BabyBeast
             </button>
           </div>

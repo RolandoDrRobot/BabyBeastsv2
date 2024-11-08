@@ -2,17 +2,17 @@ import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useDojoStore } from "../App";
 import { useDojo } from "./useDojo";
 import { v4 as uuidv4 } from "uuid";
-import { Account } from "starknet";
 
 export const useSystemCalls = () => {
-    const spawn = async ({ account}: { account: Account }) => {
+    const spawn = async () => {
         const state = useDojoStore((state) => state);
         const {
+            account,
             setup: { client },
         } = useDojo();
 
         const generateEntityId = () => {
-            return getEntityIdFromKeys([BigInt(account?.address)]);
+            return getEntityIdFromKeys([BigInt(account.account.address)]);
         };
 
         // Generate a unique entity ID
@@ -34,7 +34,7 @@ export const useSystemCalls = () => {
 
         try {
             // Execute the spawn action from the client
-            await client.actions.spawn(account);
+            await client.actions.spawn(account.account);
             return true;
 
             // Wait for the entity to be updated with the new state
