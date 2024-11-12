@@ -163,7 +163,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
   };
 
   console.log(beast)
-  
+
   useEffect(() => {
     const interval = setInterval(async () => {
       if (beast?.is_alive && account) {
@@ -173,7 +173,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
 
     return () => clearInterval(interval);
   }, [beast?.is_alive]);
-  
+
   useEffect(() => {
     if (beast?.is_alive == false) {
       showDeathAnimation();
@@ -182,7 +182,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
 
   return (
     <div className="App">
-      <Header />
+      { !beast && <Header /> } 
       {
         beast ?
           <div className="tamaguchi">
@@ -196,45 +196,12 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
                   <div className="space-y-6">
 
                     {/* Centered Tamagotchi Image */}
-                    <div className="flex justify-center items-column mt-3 mb-0">
+                    <div className="scenario flex justify-center items-column">
                       <img src={currentImage} alt="Tamagotchi" className="w-40 h-40" />
-
                     </div>
-
-                    {/* Hunger Bar */}
-                    <div className="flex items-center gap-2 mb-1">
-                      <Heart className="text-red-500" />
-                      <Progress value={beast.energy} />
-                      <span className="w-12 text-right font-medium text-white">{Math.round(beast.energy)}%</span>
-                    </div>
-                    <p className="info mt-0">Energy</p>
-
-                    {/* Energy Bar */}
-                    <div className="flex items-center gap-2 mt-2 mb-1">
-                      <Coffee className="text-yellow-600" />
-                      <Progress value={beast.hunger} />
-                      <span className="w-12 text-right font-medium text-white">{Math.round(beast.hunger)}%</span>
-                    </div>
-                    <p className="info mt-0">Hunger</p>
-
-                    {/* Happiness Bar */}
-                    <div className="flex items-center gap-2 mt-2 mb-1">
-                      <Gamepad2 className="text-green-500" />
-                      <Progress value={beast.happiness} />
-                      <span className="w-12 text-right font-medium text-white">{Math.round(beast.happiness)}%</span>
-                    </div>
-                    <p className="info mt-0">Happiness</p>
-
-                    {/* Hygiene Bar */}
-                    <div className="flex items-center gap-2 mt-2 mb-1">
-                      <Bath className="text-blue-500" />
-                      <Progress value={beast.hygiene} />
-                      <span className="w-12 text-right font-medium text-white">{Math.round(beast.hygiene)}%</span>
-                    </div>
-                    <p className="info mt-0">Hygiene</p>
 
                     {/* Action Buttons */}
-                    <p className='title mt-5'>
+                    <p className='title mt-2'>
                       Keep your BabyBeast happy and healthy
                       <span> Interact with him and level him up!</span>
                     </p>
@@ -319,10 +286,44 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
                       </Button>
                     </div>
                     <p className="info mt-3 mb-5">You can revive your baby beast, but this one is gonna loose the experience earhed</p>
+
+                    {/* Hunger Bar */}
+                    <div className="flex items-center gap-2 mb-1">
+                      <Heart className="text-red-500" />
+                      <Progress value={beast.energy} />
+                      <span className="w-12 text-right font-medium text-white">{Math.round(beast.energy)}%</span>
+                    </div>
+                    <p className="info mt-0">Energy</p>
+
+                    {/* Energy Bar */}
+                    <div className="flex items-center gap-2 mt-2 mb-1">
+                      <Coffee className="text-yellow-600" />
+                      <Progress value={beast.hunger} />
+                      <span className="w-12 text-right font-medium text-white">{Math.round(beast.hunger)}%</span>
+                    </div>
+                    <p className="info mt-0">Hunger</p>
+
+                    {/* Happiness Bar */}
+                    <div className="flex items-center gap-2 mt-2 mb-1">
+                      <Gamepad2 className="text-green-500" />
+                      <Progress value={beast.happiness} />
+                      <span className="w-12 text-right font-medium text-white">{Math.round(beast.happiness)}%</span>
+                    </div>
+                    <p className="info mt-0">Happiness</p>
+
+                    {/* Hygiene Bar */}
+                    <div className="flex items-center gap-2 mt-2 mb-1">
+                      <Bath className="text-blue-500" />
+                      <Progress value={beast.hygiene} />
+                      <span className="w-12 text-right font-medium text-white">{Math.round(beast.hygiene)}%</span>
+                    </div>
+                    <p className="info mt-0">Hygiene</p>
+
                     <p className='title mt-5 text-center'>
                       <span className="d-block">BabyBeast Stats</span>
                       The stats of your BabyBeast will increase with more levels
                     </p>
+
                     {/* Hunger Bar */}
                     <div className="flex items-center gap-2 mb-1">
                       <Swords className="text-red-500" />
