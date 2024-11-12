@@ -182,6 +182,9 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  console.log('Reporte de fallow');
+  console.log('Beast', beast);  
+
   return (
     <div className="App">
       {!beast && <Header />}
