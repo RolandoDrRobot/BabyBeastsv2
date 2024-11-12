@@ -62,7 +62,7 @@
   transition: all 0.25s;
   cursor: pointer;
   margin: 0;
-  width: 90%;
+  width: 100%;
   height: 60px;
   font-size: 18px;
 }
@@ -78,7 +78,7 @@
 }
 
 .App .cover .connect-btn {
-  width: 90%;
+  width: 100%;
   margin: auto;
   display: flex;
   align-items: center;

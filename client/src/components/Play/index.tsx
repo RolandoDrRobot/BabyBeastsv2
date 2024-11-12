@@ -11,7 +11,7 @@ function Play() {
             <span>Byte Builders Labs</span>
             <h2>Baby <span>Beast</span></h2>
           </div>
-          <div className='d-flex align-items-center mt-4 mb-2'>
+          <div className='d-flex align-items-center mt-4 mb-4'>
             <div className='col-9 mb-3 text-left'>
               <p className={'title'}>
                 You play, feed, sleep and more
