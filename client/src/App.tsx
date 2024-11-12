@@ -191,7 +191,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
           <div className="tamaguchi">
             <>
               <div className="section-title title-style-two text-center">
-                <span>Byte Beasts</span>
+                <span>Byte Builders Labs</span>
                 <h2>BabyBeast <span onClick={() => { scrollToBottom() }} >Lvl {beast.level}</span></h2>
               </div>
               <Card>
