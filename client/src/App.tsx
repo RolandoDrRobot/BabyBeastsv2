@@ -11,7 +11,6 @@ import { Progress } from './components/ui/progress';
 import { Button } from './components/ui/button';
 import { useAccount } from "@starknet-react/core";
 import { Heart, Pizza, Coffee, Bath, Gamepad2, Sun, Swords, ShieldPlus, TestTubeDiagonal, CircleGauge, } from 'lucide-react';
-import Background from "./components/Background/index";
 
 import sleep from './img/sleep.gif';
 import eat from './img/eat.gif';
@@ -183,7 +182,6 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
 
   return (
     <div className="App">
-      <Background />
       <Header />
       {
         beast ?
