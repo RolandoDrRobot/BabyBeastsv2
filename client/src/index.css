@@ -166,3 +166,8 @@
   font-size: 18px;
   color: #e4a101;
 }
+
+.section-tab-pet {
+  border-radius: 50%;
+  border: 2px solid #e4a101;
+}
