@@ -26,13 +26,6 @@ import arrow from './img/up-arrow.png';
 
 export const useDojoStore = createDojoStore<Schema>();
 
-function scrollToTop() {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
-}
-
 function App({ sdk }: { sdk: SDK<Schema> }) {
   const { account } = useAccount();
 
