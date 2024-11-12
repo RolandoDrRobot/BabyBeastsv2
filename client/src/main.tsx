@@ -62,5 +62,5 @@ async function main() {
 }
 
 main().catch((error) => {
-    console.error("Failed to initialize the application:", error);
+    console.error("Helloo Failed to initialize the application:", error);
 });
