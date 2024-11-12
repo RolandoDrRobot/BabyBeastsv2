@@ -46,7 +46,7 @@
 
 .App {
   text-align: center;
-  padding: 0 20px 50px;
+  padding: 0 20px 70px;
   color: #fff;
   width: 100%;
   max-width: 380px;
@@ -89,7 +89,7 @@
 }
 
 .tamaguchi {
-  padding-top: 40px;
+  padding-top: 20px;
   min-height: 90vh;
   background-color: transparent;
 }

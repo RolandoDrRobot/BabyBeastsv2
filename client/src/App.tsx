@@ -22,6 +22,7 @@ import Header from "./components/Header/index.tsx";
 import Footer from "./components/Footer/index.tsx";
 import Play from "./components/Play/index.tsx";
 import ControllerConnectButton from "./components/CartridgeController/ControllerConnectButton.tsx";
+import arrow from './img/up-arrow.png';
 
 export const useDojoStore = createDojoStore<Schema>();
 
@@ -180,21 +181,28 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
     }
   }, [beast?.is_alive]);
 
+  const scrollToBottom = () => {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="App">
-      { !beast && <Header /> } 
+      {!beast && <Header />}
       {
         beast ?
           <div className="tamaguchi">
             <>
               <div className="section-title title-style-two text-center">
                 <span>Byte Beasts</span>
-                <h2>BabyBeast <span>Lvl {beast.level}</span></h2>
+                <h2>BabyBeast <span onClick={() => { scrollToBottom() }} >Lvl {beast.level}</span></h2>
               </div>
               <Card>
                 <CardContent>
                   <div className="space-y-6">
-
                     {/* Centered Tamagotchi Image */}
                     <div className="scenario flex justify-center items-column">
                       <img src={currentImage} alt="Tamagotchi" className="w-40 h-40" />
@@ -375,6 +383,18 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
           </div>
       }
       <Footer />
+      <img
+        src={arrow}
+        style={{
+          width: '25px',
+          position: 'fixed',
+          top: '25px',
+          right: '20px'
+        }}
+        onClick={() => {
+          scrollToTop()
+        }}
+      />
     </div>
   );
 }
