@@ -162,7 +162,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
       if (beast?.is_alive && account) {
         await client.actions.decreaseStats(account as Account);
       }
-    }, 1000000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [beast?.is_alive]);
