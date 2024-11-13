@@ -1,9 +1,9 @@
 import { createContext, ReactNode, useContext, useMemo } from "react";
-import {
-    BurnerAccount,
-    BurnerManager,
-    useBurnerManager,
-} from "@dojoengine/create-burner";
+// import {
+//     BurnerAccount,
+//     BurnerManager,
+//     useBurnerManager,
+// } from "@dojoengine/create-burner";
 import { Account } from "starknet";
 import { dojoConfig } from "../../dojoConfig";
 import { DojoProvider } from "@dojoengine/core";
@@ -12,17 +12,17 @@ import { client } from "./contracts.gen";
 interface DojoContextType {
     masterAccount: Account;
     client: ReturnType<typeof client>;
-    account: BurnerAccount;
+    // account: BurnerAccount;
 }
 
 export const DojoContext = createContext<DojoContextType | null>(null);
 
 export const DojoContextProvider = ({
     children,
-    burnerManager,
+    // burnerManager,
 }: {
     children: ReactNode;
-    burnerManager: BurnerManager;
+    // burnerManager: BurnerManager;
 }) => {
     const currentValue = useContext(DojoContext);
     if (currentValue) {
@@ -45,17 +45,17 @@ export const DojoContextProvider = ({
         []
     );
 
-    const burnerManagerData = useBurnerManager({ burnerManager });
+    // const burnerManagerData = useBurnerManager({ burnerManager });
 
     return (
         <DojoContext.Provider
             value={{
                 masterAccount,
                 client: client(dojoProvider),
-                account: {
-                    ...burnerManagerData,
-                    account: burnerManagerData.account || masterAccount,
-                },
+                // account: {
+                //     ...burnerManagerData,
+                //     account: burnerManagerData.account || masterAccount,
+                // },
             }}
         >
             {children}

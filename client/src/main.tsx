@@ -8,7 +8,7 @@ import { init } from "@dojoengine/sdk";
 import { Schema, schema } from "./dojo/bindings.ts";
 import { dojoConfig } from "../dojoConfig.ts";
 import { DojoContextProvider } from "./dojo/DojoContext.tsx";
-import { setupBurnerManager } from "@dojoengine/create-burner";
+// import { setupBurnerManager } from "@dojoengine/create-burner";
 
 import { sepolia } from "@starknet-react/chains";
 import { StarknetConfig, starkscan } from "@starknet-react/core";
@@ -45,7 +45,7 @@ async function main() {
     createRoot(document.getElementById("root")!).render(
         <StrictMode>
             <DojoContextProvider
-                burnerManager={await setupBurnerManager(dojoConfig)}
+                // burnerManager={await setupBurnerManager(dojoConfig)}
             >
                 <StarknetConfig
                     autoConnect
