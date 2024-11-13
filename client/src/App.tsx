@@ -168,7 +168,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
   }, [beast?.is_alive]);
 
   useEffect(() => {
-    if (beast?.is_alive == false) {
+    if (beast?.is_alive == false ) {
       showDeathAnimation();
     }
   }, [beast?.is_alive]);

@@ -40,8 +40,6 @@ async function main() {
         schema
     );
 
-    console.log('Right here')
-
     createRoot(document.getElementById("root")!).render(
         <StrictMode>
             <DojoContextProvider
