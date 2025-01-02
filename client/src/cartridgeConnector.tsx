@@ -4,35 +4,35 @@ import { Connector } from "@starknet-react/core";
 
 const policies: Policy[] = [
   {
-    target: '0x7a1c71029f2d0b38e3ac89b09931d08b6e48417e079c289ff19a8698d0cba33',
+    target: '0x17e18f79cb18f179e97c785b63f99c98c1d66a10b0c515365743602127148ec',
     method: "spawn",
   },
   {
-    target: '0x7a1c71029f2d0b38e3ac89b09931d08b6e48417e079c289ff19a8698d0cba33',
+    target: '0x17e18f79cb18f179e97c785b63f99c98c1d66a10b0c515365743602127148ec',
     method: "decrease_stats",
   },
   {
-    target: '0x7a1c71029f2d0b38e3ac89b09931d08b6e48417e079c289ff19a8698d0cba33',
+    target: '0x17e18f79cb18f179e97c785b63f99c98c1d66a10b0c515365743602127148ec',
     method: "feed",
   },
   {
-    target: '0x7a1c71029f2d0b38e3ac89b09931d08b6e48417e079c289ff19a8698d0cba33',
+    target: '0x17e18f79cb18f179e97c785b63f99c98c1d66a10b0c515365743602127148ec',
     method: "sleep",
   },
   {
-    target: '0x7a1c71029f2d0b38e3ac89b09931d08b6e48417e079c289ff19a8698d0cba33',
+    target: '0x17e18f79cb18f179e97c785b63f99c98c1d66a10b0c515365743602127148ec',
     method: "awake",
   },
   {
-    target: '0x7a1c71029f2d0b38e3ac89b09931d08b6e48417e079c289ff19a8698d0cba33',
+    target: '0x17e18f79cb18f179e97c785b63f99c98c1d66a10b0c515365743602127148ec',
     method: "play",
   },
   {
-    target: '0x7a1c71029f2d0b38e3ac89b09931d08b6e48417e079c289ff19a8698d0cba33',
+    target: '0x17e18f79cb18f179e97c785b63f99c98c1d66a10b0c515365743602127148ec',
     method: "clean",
   },
   {
-    target: '0x7a1c71029f2d0b38e3ac89b09931d08b6e48417e079c289ff19a8698d0cba33',
+    target: '0x17e18f79cb18f179e97c785b63f99c98c1d66a10b0c515365743602127148ec',
     method: "revive",
   },
 ]
