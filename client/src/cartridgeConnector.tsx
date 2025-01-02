@@ -4,35 +4,35 @@ import { Connector } from "@starknet-react/core";
 
 const policies: Policy[] = [
   {
-    target: '0x20b3efe3ee5116904f4e08ca391715c5bf6703f630b6e91677010e308aebfc1',
+    target: '0x7a1c71029f2d0b38e3ac89b09931d08b6e48417e079c289ff19a8698d0cba33',
     method: "spawn",
   },
   {
-    target: '0x20b3efe3ee5116904f4e08ca391715c5bf6703f630b6e91677010e308aebfc1',
+    target: '0x7a1c71029f2d0b38e3ac89b09931d08b6e48417e079c289ff19a8698d0cba33',
     method: "decrease_stats",
   },
   {
-    target: '0x20b3efe3ee5116904f4e08ca391715c5bf6703f630b6e91677010e308aebfc1',
+    target: '0x7a1c71029f2d0b38e3ac89b09931d08b6e48417e079c289ff19a8698d0cba33',
     method: "feed",
   },
   {
-    target: '0x20b3efe3ee5116904f4e08ca391715c5bf6703f630b6e91677010e308aebfc1',
+    target: '0x7a1c71029f2d0b38e3ac89b09931d08b6e48417e079c289ff19a8698d0cba33',
     method: "sleep",
   },
   {
-    target: '0x20b3efe3ee5116904f4e08ca391715c5bf6703f630b6e91677010e308aebfc1',
+    target: '0x7a1c71029f2d0b38e3ac89b09931d08b6e48417e079c289ff19a8698d0cba33',
     method: "awake",
   },
   {
-    target: '0x20b3efe3ee5116904f4e08ca391715c5bf6703f630b6e91677010e308aebfc1',
+    target: '0x7a1c71029f2d0b38e3ac89b09931d08b6e48417e079c289ff19a8698d0cba33',
     method: "play",
   },
   {
-    target: '0x20b3efe3ee5116904f4e08ca391715c5bf6703f630b6e91677010e308aebfc1',
+    target: '0x7a1c71029f2d0b38e3ac89b09931d08b6e48417e079c289ff19a8698d0cba33',
     method: "clean",
   },
   {
-    target: '0x20b3efe3ee5116904f4e08ca391715c5bf6703f630b6e91677010e308aebfc1',
+    target: '0x7a1c71029f2d0b38e3ac89b09931d08b6e48417e079c289ff19a8698d0cba33',
     method: "revive",
   },
 ]

@@ -16,10 +16,10 @@ telegram = "https://t.me/dojoengine"
 default = "dojo_starter"
 
 [env]
-rpc_url = "https://api.cartridge.gg/x/babybeast-slot/katana"
+rpc_url = "https://api.cartridge.gg/x/bt/katana"
 # Default account for katana with seed = 0
-account_address = "0x6319af1a5ff49a7b68e83981897a6648200145f676a9fe9b10aa8df6543a3d5"
-private_key = "0x4da52dfcdbd57c9853c33df71aa1c57d366435f41e803191f2139ec9759fc1a"
+account_address = "0x69d851871b6ffc967ed920d6e881a307d10d664bf317ab2c0872fddc3a87144"
+private_key = "0x4885f37c4a0cce10d16ef749053fd74d83913eb222c2d237fecd93e231bc039"
 # world_address = "0x06171ed98331e849d6084bf2b3e3186a7ddf35574dd68cab4691053ee8ab69d7"
 
 [writers]
