@@ -40,7 +40,7 @@ const policies: Policy[] = [
 // Configuración básica del conector
 const cartridgeConnector = new ControllerConnector({
   policies,
-  rpc: "https://api.cartridge.gg/x/babybeast-slot/katana",
+  rpc: "https://api.cartridge.gg/x/bt/katana",
 }) as never as Connector;
 
 export default cartridgeConnector;
