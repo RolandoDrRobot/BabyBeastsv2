@@ -40,7 +40,7 @@ function App({ sdk }: { sdk: SDK<Schema> }) {
     [account?.address]
   );
 
-  const beastData = useModel(entityId, Models.Beast);
+  const beastData = useModel(entityId ?? "", Models.Beast);
   const [beast, setBeast] = useState(beastData);
 
   // Trigger build
