@@ -16,7 +16,7 @@ export default defineConfig({
         enabled: true,
       },
       includeAssets: [
-        "./src/img/logo.jpeg",
+        "/assets/logo-BqZKd97Z.jpeg",
       ],
       manifest: {
         name: "BabyBeasts",
@@ -28,13 +28,13 @@ export default defineConfig({
         orientation: "portrait",
         icons: [
           {
-            src: "./src/img/logo.jpeg",
+            src: "/assets/logo-BqZKd97Z.jpeg",
             sizes: "180x180",
             type: "image/jpeg",
           },
         ],
         start_url: "/",
-        id: "BabyBeasts",
+        id: "Wendy",
       },
       workbox: {
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // Set to 5 MiB
